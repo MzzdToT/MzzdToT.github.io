@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="参数说明hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e ns][-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV] server service [OPT]-R 继续从上一次进度接着破解。-S 采用SSL链接。-s PO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爆破工具--Hydra使用说明">
+<meta property="og:url" content="https://mzzdtot.github.io/2020/05/26/hydra/index.html">
+<meta property="og:site_name" content="Mzzd">
+<meta property="og:description" content="参数说明hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e ns][-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV] server service [OPT]-R 继续从上一次进度接着破解。-S 采用SSL链接。-s PO">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra1.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra2.png">
+<meta property="article:published_time" content="2020-05-26T02:53:42.000Z">
+<meta property="article:modified_time" content="2020-05-26T12:18:31.682Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>爆破工具--Hydra使用说明</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/05/20/hexo%E5%8D%9A%E5%AE%A2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/05/26/hydra/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/05/26/hydra/&text=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/05/26/hydra/&is_video=false&description=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=爆破工具--Hydra使用说明&body=Check out this article: https://mzzdtot.github.io/2020/05/26/hydra/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/05/26/hydra/&name=爆破工具--Hydra使用说明&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/05/26/hydra/&t=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        爆破工具--Hydra使用说明
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mzzd</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-05-26T02:53:42.000Z" itemprop="datePublished">2020-05-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong>参数说明</strong><br>hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e ns]<br>[-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV] server service [OPT]<br>-R 继续从上一次进度接着破解。<br>-S 采用SSL链接。<br>-s PORT 可通过这个参数指定非默认端口。<br>-l LOGIN 指定破解的用户，对特定用户破解。<br>-L FILE 指定用户名字典。<br>-p PASS 小写，指定密码破解，少用，一般是采用密码字典。<br>-P FILE 大写，指定密码字典。<br>-e ns 可选选项，n：空密码试探，s：使用指定用户和密码试探。<br>-C FILE 使用冒号分割格式，例如“登录名:密码”来代替-L/-P参数。<br>-M FILE 指定目标列表文件一行一条。<br>-o FILE 指定结果输出文件。<br>-f 在使用-M参数以后，找到第一对登录名或者密码的时候中止破解。<br>-t TASKS 同时运行的线程数，默认为16。<br>-w TIME 设置最大超时的时间，单位秒，默认是30s。<br>-v / -V 显示详细过程。<br>server 目标ip<br>service 指定服务名</p>
+<p><strong>1、破解ssh：</strong><br>hydra -l 用户名 -P 密码字典 -t 线程 -vV -e ns 127.0.0.1 ssh<br>hydra -l 用户名 -P 密码字典 -t 线程 -o save.log -vV 127.0.0.1 ssh</p>
+<p>示例如下：<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra1.png" alt="avatar"><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra2.png" alt="avatar"><br>破解成功账号密码会回显出来。</p>
+<p>其他常用服务和协议例子：<br><strong>2、破解ftp：</strong><br>hydra 127.0.0.1 ftp -l 用户名 -P 密码字典 -t 线程(默认16) -vV<br>hydra 127.0.0.1 ftp -l 用户名 -P 密码字典 -e ns -vV</p>
+<p><strong>3、get方式提交，破解web登录：</strong><br>hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns 127.0.0.1 http-get /admin/<br>hydra -l 用户名 -p 密码字典 -t 线程 -vV -e ns -f 127.0.0.1 http-get /admin/index.php</p>
+<p><strong>4、post方式提交，破解web登录：</strong><br>hydra -l 用户名 -P 密码字典 -s 80 127.0.0.1 http-post-form “/admin/login.php:username=^USER^&amp;password=^PASS^&amp;submit=login:sorry password”<br>hydra -t 3 -l admin -P pass.txt -o out.txt -f 127.0.0.1 http-post-form “login.php:id=^USER^&amp;passwd=^PASS^:<title>wrong username or password</title>“<br>（参数说明：-t同时线程数3，-l用户名是admin，字典pass.txt，保存为out.txt，-f 当破解了一个密码就停止， 127.0.0.1目标ip，http-post-form表示破解是采用http的post方式提交的表单密码破解,<title>中 的内容是表示错误猜解的返回信息提示。）</p>
+<p><strong>5、破解https：</strong><br>hydra -m /index.php -l muts -P pass.txt 127.0.0.1 https</p>
+<p><strong>6、破解teamspeak：</strong><br>hydra -l 用户名 -P 密码字典 -s 端口号 -vV 127.0.0.1 teamspeak</p>
+<p><strong>7、破解cisco：</strong><br>hydra -P pass.txt 127.0.0.1 cisco<br>hydra -m cloud -P pass.txt 127.0.0.1 cisco-enable</p>
+<p><strong>8、破解smb：</strong><br>hydra -l administrator -P pass.txt 127.0.0.1 smb</p>
+<p><strong>9、破解pop3：</strong><br>hydra -l muts -P pass.txt my.pop3.mail pop3</p>
+<p><strong>10、破解rdp：</strong><br>hydra 127.0.0.1 rdp -l administrator -P pass.txt -V</p>
+<p><strong>11、破解http-proxy：</strong><br>hydra -l admin -P pass.txt http-proxy://127.0.0.1</p>
+<p><strong>12、破解imap：</strong><br>hydra -L user.txt -p secret 127.0.0.1 imap PLAIN<br>hydra -C defaults.txt -6 imap://[fe80::2c:31ff:fe12:ac11]:143/PLAIN</p>
+<p><strong>13、破解msql</strong><br>hydra -l root –p pass.txt –e ns 127.0.0.1 mysql</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/05/26/hydra/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/05/26/hydra/&text=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/05/26/hydra/&is_video=false&description=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=爆破工具--Hydra使用说明&body=Check out this article: https://mzzdtot.github.io/2020/05/26/hydra/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/05/26/hydra/&title=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/05/26/hydra/&name=爆破工具--Hydra使用说明&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/05/26/hydra/&t=爆破工具--Hydra使用说明" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2020
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
