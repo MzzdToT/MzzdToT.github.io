@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra1.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra2.png">
 <meta property="article:published_time" content="2020-05-26T02:53:42.000Z">
-<meta property="article:modified_time" content="2020-05-26T13:07:10.335Z">
+<meta property="article:modified_time" content="2020-05-26T13:08:09.194Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/hydra1.png">
@@ -147,7 +147,7 @@
 
   <div class="content" itemprop="articleBody">
     <p><strong>参数说明</strong><br>hydra [[[-l LOGIN|-L FILE] [-p PASS|-P FILE]] | [-C FILE]] [-e ns]<br>[-o FILE] [-t TASKS] [-M FILE [-T TASKS]] [-w TIME] [-f] [-s PORT] [-S] [-vV] server service [OPT]<br>-R 继续从上一次进度接着破解。<br>-S 采用SSL链接。<br>-s PORT 可通过这个参数指定非默认端口。<br>-l LOGIN 指定破解的用户，对特定用户破解。<br>-L FILE 指定用户名字典。<br>-p PASS 小写，指定密码破解，少用，一般是采用密码字典。<br>-P FILE 大写，指定密码字典。<br>-e ns 可选选项，n：空密码试探，s：使用指定用户和密码试探。<br>-C FILE 使用冒号分割格式，例如“登录名:密码”来代替-L/-P参数。<br>-M FILE 指定目标列表文件一行一条。<br>-o FILE 指定结果输出文件。<br>-f 在使用-M参数以后，找到第一对登录名或者密码的时候中止破解。<br>-t TASKS 同时运行的线程数，默认为16。<br>-w TIME 设置最大超时的时间，单位秒，默认是30s。<br>-v / -V 显示详细过程。<br>server 目标ip<br>service 指定服务名</p>
-<p>以下均以目标IP为127.0.0.1举例</p>
+<p>以下均以目标IP为127.0.0.1举例，实际运用中替换为实际目标IP即可。</p>
 <p><strong>1、破解ssh：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hydra -l 用户名 -P 密码字典 -t 线程 -vV -e ns 127.0.0.1 ssh</span><br><span class="line">hydra -l 用户名 -P 密码字典 -t 线程 -o save.log -vV 127.0.0.1 ssh</span><br></pre></td></tr></table></figure>
 
