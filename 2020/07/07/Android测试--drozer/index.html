@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="安装1.1 环境要求  jdk1.6+ python2.7 android sdk1.2 安装sdk和drozer 下载这里给一个我下载好的SDK提取码：4afr和drozer提取码：ln90链接 安装解压sdk和drozer进入drozer运行setup安装配置环境变量把drozer文件夹下的agent.apk安装到手机中并运行   基本使用2.1 连接使用数据线连接手机和计算机，手机开启us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android测试--Drozer安装使用（Windows10）">
+<meta property="og:url" content="https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/index.html">
+<meta property="og:site_name" content="Mzzd">
+<meta property="og:description" content="安装1.1 环境要求  jdk1.6+ python2.7 android sdk1.2 安装sdk和drozer 下载这里给一个我下载好的SDK提取码：4afr和drozer提取码：ln90链接 安装解压sdk和drozer进入drozer运行setup安装配置环境变量把drozer文件夹下的agent.apk安装到手机中并运行   基本使用2.1 连接使用数据线连接手机和计算机，手机开启us">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image1.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image2.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image3.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image4.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image5.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image6.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image7.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image11.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image12.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image13.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image14.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image15.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image8.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image9.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image10.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/error1.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/error2.png">
+<meta property="article:published_time" content="2020-07-07T02:53:42.000Z">
+<meta property="article:modified_time" content="2020-07-08T03:23:12.750Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Android测试--Drozer安装使用（Windows10）</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/06/01/2018SUCTF%20GETshell--%E5%AD%97%E7%AC%A6%E5%8F%96%E5%8F%8D%E7%BB%95%E8%BF%87%E6%AD%A3%E5%88%99/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&text=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&is_video=false&description=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Android测试--Drozer安装使用（Windows10）&body=Check out this article: https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&name=Android测试--Drozer安装使用（Windows10）&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&t=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Android测试--Drozer安装使用（Windows10）
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mzzd</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-07-07T02:53:42.000Z" itemprop="datePublished">2020-07-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <ol>
+<li><p>安装<br>1.1 环境要求</p>
+<ul>
+<li>jdk1.6+</li>
+<li>python2.7</li>
+<li>android sdk<br>1.2 安装sdk和drozer</li>
+<li>下载<br>这里给一个我下载好的<a href="链接：https://pan.baidu.com/s/1q284YtVxwO7_45BqPPlyIQ">SDK</a>提取码：4afr和<a href="链接：https://pan.baidu.com/s/1oSCOPbyv9QWJcKbNzZ2pLA">drozer</a>提取码：ln90链接</li>
+<li>安装<br>解压sdk和drozer<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image1.png" alt="1"><br>进入drozer运行setup安装<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image2.png" alt="2"><br>配置环境变量<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image3.png" alt="3"><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image4.png" alt="4"><br>把drozer文件夹下的agent.apk安装到手机中并运行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image5.png" alt="5"></li>
+</ul>
+</li>
+<li><p>基本使用<br>2.1 连接<br>使用数据线连接手机和计算机，手机开启usb调试<br><code>adb devices</code><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image6.png" alt="6"><br>运行drozer<br>本地电脑上调用adb执行命令：adb forward tcp:31415 tcp:31415进行端口转发<br>正常情况下到drozer安装路径下运行 ：drozer console connect 会显示如下界面，之后即可正常运用drozer进行调试Android应用<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image7.png" alt="7"></p>
+<p>2.2 使用<br>ls可查看drozer所有可用模块<br>列出app列表<br><code>run app.package.list</code><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image11.png" alt="11"><br>查看程序包信息  #com.iman.hom.woa为包名<br><code>run app.package.info -a com.iman.hom.woa</code><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image12.png" alt="12"></p>
+<p>Android四大基本组件分别是<br>Activity<br>Service服务<br>Content Provider内容提供者<br>BroadcastReceiver广播接收器</p>
+<p>查看该app可攻击面（即对外开放的组件）<br><code>run app.package.attacksurface</code></p>
+<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image13.png" alt="13"><br>显示有一个组件可利用</p>
+<p>使用app.activity.info模块查看activity组件信息<br>使用app.provider.info模块查看content provider组件信息<br>使用app.service.info模块查看service组件信息</p>
+<p>查看利用信息（其他组件利用命令类似）<br><code>run app.activity.info -a jane.eastcom.hnperformance</code><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image14.png" alt="14"><br>显示安全登录组件没有限制<br>加入-i参数 可以查看更详细的信息<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image15.png" alt="15"></p>
+</li>
+</ol>
+<p>其他</p>
+<p>获取所有可以访问的Uri——Content Providers（数据泄露）<br>命令：run scanner.provider.finduris -a 包名</p>
+<p>检测SQL注入<br>命令：run scanner.provider.injection -a 包名</p>
+<p>检测目录遍历<br>命令：run scanner.provider.traversal -a 包名</p>
+<p>其他run命令介绍</p>
+<p>$ run tools.file.size<br>//获取文件大小</p>
+<p>$ run app.activity.forintent<br>//查找可以处理给定意图的活动</p>
+<p>$ run app.activity.info<br>//获取有关导出活动的信息</p>
+<p>$ run app.activity.start<br>//开始一个活动</p>
+<p>$ run app.broadcast.info<br>//获取有关广播接收器的信息</p>
+<p>$ run app.broadcast.send<br>//使用意图发送广播</p>
+<p>$ run app.broadcast.sniff<br>//注册可以嗅探特定意图的广播接收器</p>
+<p>$ run app.package.attacksurface<br>//获取包的攻击面</p>
+<p>$ run app.package.backup<br>//列出使用备份API的软件包（在FLAG_ALLOW_BACKUP上返回true）</p>
+<p>$ run app.package.debuggable<br>//查找可调试包</p>
+<p>$ run app.package.info<br>//获取有关已安装软件包的信息</p>
+<p>$ run app.package.launchintent<br>//获取包的启动意图</p>
+<p>$ run app.package.list<br>//列出包</p>
+<p>$ run app.package.manifest<br>//获取AndroidManifest。包的xml</p>
+<p>$ run app.package.native<br>//找到嵌入在应用程序中的本机库</p>
+<p>$ run app.package.shareduid<br>//查找具有共享UID的软件包</p>
+<p>$ run app.provider.columns<br>//列出内容提供者中的列</p>
+<p>$ run app.provider.delete<br>//从内容提供者删除</p>
+<p>$ run app.provider.download<br>//从支持文件的内容提供商下载文件</p>
+<p>$ run app.provider.finduri<br>//在包中查找引用的内容URI</p>
+<p>$ run app.provider.info<br>//获取有关导出的内容提供商的信息</p>
+<p>$ run app.provider.insert<br>//插入内容提供者</p>
+<p>$ run app.provider.query<br>//查询内容提供者<br>$ run app.provider.read<br>//从支持文件的内容提供者读取</p>
+<p>$ run app.provider.update<br>//更新内容提供商中的记录</p>
+<p>$ run app.service.info<br>//获取有关导出服务的信息</p>
+<p>$ run app.service.send<br>//向服务发送消息，并显示回复</p>
+<p>$ run app.service.start<br>//启动服务</p>
+<p>$ run app.service.stop<br>//停止服务</p>
+<p>$ run auxiliary.webcontentresolver<br>//启动到内容提供商的Web服务界面</p>
+<p>$ run exploit.jdwp.check<br>//打开@ jdwp-control，然后查看连接了哪些应用</p>
+<p>$ run exploit.pilfer.general.apnprovider<br>//读取APN内容提供者</p>
+<p>$ run exploit.pilfer.general.settingsprovider<br>//读取设置内容提供者</p>
+<p>$ run information.datetime<br>//打印日期/时间</p>
+<p>$ run information.deviceinfo<br>//获取详细的设备信息</p>
+<p>$ run information.permissions<br>//获取设备上程序包使用的所有权限的列表</p>
+<p>$ run scanner.activity.browsable<br>//获取所有可从Web浏览器调用的BROWSABLE活动</p>
+<p>$ run scanner.misc.native<br>//查找包中包含的本机组件</p>
+<p>$ run scanner.misc.readablefiles<br>//在给定的文件夹中查找世界可读的文件</p>
+<p>$ run scanner.misc.secretcodes<br>//搜索可从拨号器使用的密码</p>
+<p>$ run scanner.misc.sflagbinaries<br>//在给定的文件夹中查找suid / sgid二进制文件（默认为/ system）</p>
+<p>$ run scanner.misc.writablefiles<br>//在给定的文件夹中查找可写入世界的文件</p>
+<p>$ run scanner.provider.finduris<br>//搜索可以从我们的上下文中查询的内容提供者</p>
+<p>$ run scanner.provider.injection<br>//测试内容提供程序是否存在SQL注入漏洞</p>
+<p>$ run scanner.provider.sqltables<br>//查找可通过SQL注入漏洞访问的表</p>
+<p>$ run scanner.provider.traversal<br>//测试内容提供者的基本目录遍历漏洞</p>
+<p>$ run shell.exec<br>//执行一个Linux命令</p>
+<p>$ run shell.send<br>//将ASH Shell发送到远程侦听器</p>
+<p>$ run shell.start<br>//进入交互式Linux shell</p>
+<p>$ run tools.file.download<br>//下载文件</p>
+<p>$ run tools.file.md5sum<br>//获取文件S运行工具的md5校验和。文件。 size //获取文件大小</p>
+<p>$ run tools.file.upload<br>//上传一个文件</p>
+<p>$ run tools.setup.busybox<br>//安装Busybox</p>
+<p>$ run tools.setup.minimalsu<br>//在设备上准备“ minimum-su”二进制安装</p>
+<p><strong>FAQ</strong></p>
+<ol>
+<li><p>adb device显示设备offline<br>1、 检查usb调试是否开启<br>2、 重启adb服务<br>   adb kill-server<br>   adb start-server<br>3、 查看SDK Manger 确保SDK已更新 需要adb 版本在1.0.31 （dos中通过adb version查看adb版本）</p>
+</li>
+<li><p>drozer console connect连接不上<br>1、 如下报错<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image8.png" alt="8"><br>需要检查如下项目<br>   1、 JDK是否安装<br>   2、 环境变量是否正确配置（命令行下执行：java、javac、java -version 命令是否返回正常数据）<br>   如果以上项目均正常的话可做如下修复：<br>   建立名为 .drozer_config的文件，文件中添加如下内容：<br>   [executables]<br>   java=E:\Java\bin\java.exe<br>   javac=E:\Java\bin\javac.exe<br>   即java和javac的路径，保存后存放到C:\Users\XXX\ 目录下，其中XXX为当前用户名目录下，之后重新连接成功<br>   <img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/image9.png" alt="9"><br>2、 如下报错<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/Image10.png" alt="10"><br>请确认手机drozer代理是否为开启状态</p>
+</li>
+<li><p>使用run命令显示[Errno 10053]<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/error1.png" alt="e1"><br>1、 检查手机端drozer agent是否正常开启<br>2、 重启drozer<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/drozer/error2.png" alt="e2"></p>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&text=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&is_video=false&description=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Android测试--Drozer安装使用（Windows10）&body=Check out this article: https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&title=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&name=Android测试--Drozer安装使用（Windows10）&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/&t=Android测试--Drozer安装使用（Windows10）" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2020
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
