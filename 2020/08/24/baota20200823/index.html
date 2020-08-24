@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="影响版本宝塔Linux面板7.4.2版本宝塔Windows面板6.8版本并且安装了phpmyadmin，只有7.4.2这个版本受影响其他版本暂不受影响 漏洞利用payload 1http:&#x2F;&#x2F;ip:888&#x2F;pma (888为宝塔安装的phpmyadmin默认端口) 简单写了一个批量扫描脚本，放Github了 全球地址段搜索阿三 放御剑扫一下 用脚本批量测试 随便找一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="宝塔面板未授权漏洞">
+<meta property="og:url" content="https://mzzdtot.github.io/2020/08/24/baota20200823/index.html">
+<meta property="og:site_name" content="Mzzd">
+<meta property="og:description" content="影响版本宝塔Linux面板7.4.2版本宝塔Windows面板6.8版本并且安装了phpmyadmin，只有7.4.2这个版本受影响其他版本暂不受影响 漏洞利用payload 1http:&#x2F;&#x2F;ip:888&#x2F;pma (888为宝塔安装的phpmyadmin默认端口) 简单写了一个批量扫描脚本，放Github了 全球地址段搜索阿三 放御剑扫一下 用脚本批量测试 随便找一个">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/yujian.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/scan.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/phpmyadmin.png">
+<meta property="article:published_time" content="2020-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-08-24T03:48:22.258Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/yujian.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>宝塔面板未授权漏洞</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/07/07/Android%E6%B5%8B%E8%AF%95--drozer/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/08/24/baota20200823/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&text=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&is_video=false&description=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=宝塔面板未授权漏洞&body=Check out this article: https://mzzdtot.github.io/2020/08/24/baota20200823/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&name=宝塔面板未授权漏洞&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/08/24/baota20200823/&t=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">1.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用"><span class="toc-number">2.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#临时解决方法"><span class="toc-number">3.</span> <span class="toc-text">临时解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修复建议"><span class="toc-number">4.</span> <span class="toc-text">修复建议</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        宝塔面板未授权漏洞
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mzzd</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-08-23T16:00:00.000Z" itemprop="datePublished">2020-08-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>宝塔Linux面板7.4.2版本<br>宝塔Windows面板6.8版本<br>并且安装了phpmyadmin，只有7.4.2这个版本受影响其他版本暂不受影响</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;ip:888&#x2F;pma (888为宝塔安装的phpmyadmin默认端口)</span><br></pre></td></tr></table></figure>
+<p>简单写了一个批量扫描脚本，放<a href="https://github.com/MzzdToT/baota20200823" target="_blank" rel="noopener">Github</a>了</p>
+<p>全球地址段搜索阿三</p>
+<p>放御剑扫一下<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/yujian.png" alt="explain"></p>
+<p>用脚本批量测试<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/scan.png" alt="explain"></p>
+<p>随便找一个访问看看<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/baota20200823/phpmyadmin.png" alt="explain"></p>
+<h2 id="临时解决方法"><a href="#临时解决方法" class="headerlink" title="临时解决方法"></a>临时解决方法</h2><p>1.关闭888端口</p>
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p>1.升级到最新的Linux面板 7.4.3版本和Windows 面板 6.9.0版本</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">1.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用"><span class="toc-number">2.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#临时解决方法"><span class="toc-number">3.</span> <span class="toc-text">临时解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修复建议"><span class="toc-number">4.</span> <span class="toc-text">修复建议</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/08/24/baota20200823/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&text=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&is_video=false&description=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=宝塔面板未授权漏洞&body=Check out this article: https://mzzdtot.github.io/2020/08/24/baota20200823/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&title=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/08/24/baota20200823/&name=宝塔面板未授权漏洞&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/08/24/baota20200823/&t=宝塔面板未授权漏洞" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2020
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
