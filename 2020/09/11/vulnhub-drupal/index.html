@@ -38,6 +38,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/namepass.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/login.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/tiago.png">
+<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/home.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/uname.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester2.png">
@@ -49,7 +50,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/sshok.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/flag.png">
 <meta property="article:published_time" content="2020-09-11T02:53:42.000Z">
-<meta property="article:modified_time" content="2020-09-24T01:37:11.197Z">
+<meta property="article:modified_time" content="2020-09-25T02:18:43.456Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/network.png">
@@ -204,7 +205,7 @@
 <p>先试一下2019年的<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/2019.png" alt="10"><br>show options填写好参数后 run<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/run1.png" alt="11"><br>发现不存在这个漏洞</p>
 <p>返回试另一个2018年的<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/2018.png" alt="12"><br>参数需要设置目标IP和端口，target用默认的先run一下<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/run2.png" alt="13"><br>得到shell</p>
 <p>发现只有web权限，看来有可能需要提权<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/webshell.png" alt="14"><br>翻一下目录发现有一张图<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/qrc.png" alt="15"><br>下载到本地看一下<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/find.png" alt="16"><br>发现是一张二维码<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/mant.png" alt="17"><br>扫描显示Try harger! Muahuahuahua，没什么用。</p>
-<p>继续翻，不过msf的shell不是交互shell,使用起来不是很方便<br>确认目标机有python后<br>我们执行shell进入命令行使用python的pty模块创建一个标准终端</p>
+<p>继续翻，不过msf的shell不是交互shell,使用起来不是很方便<br>确认目标机有python后<br>我执行shell进入命令行使用python的pty模块创建一个标准终端</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#39;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;bash&quot;)&#39;</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/pty.png" alt="18"><br>找配置文件，中间绕了很多弯路，但最终还是找到了 settings.php<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/set.png" alt="19"><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/database.png" alt="20"><br>得到数据库账号密码</p>
 <p>开始操作<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/mysql.png" alt="21"><br>翻drupal库的表<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/drupal2.png" alt="22"><br>其中有users表</p>
@@ -213,14 +214,17 @@
 <p><strong>获取普通用户权限</strong></p>
 <p>尝试使用账号tiago密码Virgulino登录<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/login.png" alt="24"><br>成功登录</p>
 <p>但是权限不够<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/tiago.png" alt="25"></p>
-<h2 id="0x03提权"><a href="#0x03提权" class="headerlink" title="0x03提权"></a>0x03提权</h2><p>查看内核版本</p>
+<h2 id="0x03提权"><a href="#0x03提权" class="headerlink" title="0x03提权"></a>0x03提权</h2><p><strong>1、sudo误配</strong><br>既然已经拿到了低权限账号的密码<br>那么我首先尝试sudo误配提权<br>它的成功率非常高，不仅对系统完全无损，并且不会像内核提权那样可能导致系统挂起。<br>利用方法为:查看home​/用户目录下是否有.sudo_as_admin_successful文件，若有则可以输入当前低权账号的密码直接 sudo su 切换为 root 用户。</p>
+<p>切换到/home/tiago目录下<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/home.png" alt="25"><br>没有此文件<br>没关系，尝试其他提权手法。</p>
+<p>查看目标机内核版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/uname.png" alt="26"><br>比较老了,先看一下能利用的提权exp</p>
 <p>使用msf传linux-exploit-suggester-2到靶机执行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester.png" alt="27"><br>但是此时并没有执行权限<br>赋权</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 linux-exploit-suggester-2.pl</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester2.png" alt="28"><br>执行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester3.png" alt="28"><br>看了一下最后一个链接涵盖此内核版本<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/exp1.png" alt="29"><br>选择CVE-2017-16995<br>下载<a href="https://github.com/iBearcat/CVE-2017-16995" target="_blank" rel="noopener">https://github.com/iBearcat/CVE-2017-16995</a></p>
+<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester2.png" alt="28"><br>执行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/suggester3.png" alt="28"><br>看了一下最后一个链接涵盖此内核版本<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/exp1.png" alt="29"></p>
+<p><strong>2、CVE-2017-16995</strong><br>选择CVE-2017-16995<br>下载<a href="https://github.com/iBearcat/CVE-2017-16995" target="_blank" rel="noopener">https://github.com/iBearcat/CVE-2017-16995</a></p>
 <p>上传、赋权、执行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/2017.png" alt="30"><br>一顿操作，最后失败。貌似脚本问题。</p>
-<p>这次不算<br>尝试脏牛提权<br>kali自带，使用searchsploit dirty搜索<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/dirty.png" alt="31"><br>上传.cpp到目标机编辑</p>
+<p><strong>3、脏牛提权</strong><br>从linux-exploit-suggester-2的执行结果中看到提权漏洞涵盖脏牛<br>尝试脏牛提权<br>kali自带脏牛exp，使用searchsploit dirty搜索<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/dirty.png" alt="31"><br>上传.cpp到目标机编辑</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -Wall -pedantic -O2 -std&#x3D;c++11 -pthread -o 40847 40847.cpp -lutil</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/cpp.png" alt="32"><br>ssh端成功执行<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/sshok.png" alt="33"><br>得到root密码dirtyCowFun<br>ssh切换root重新登录<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/lampiao/flag.png" alt="34"><br>得到flag。</p>
 
