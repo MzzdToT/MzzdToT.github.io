@@ -12,14 +12,15 @@
 <meta property="og:url" content="https://mzzdtot.github.io/2020/05/21/BlueLotus_XSSReceiver/index.html">
 <meta property="og:site_name" content="m2">
 <meta property="og:description" content="0x01安装web环境linux首先确认更新源没有问题Centos 1234567891011121314#安装web服务yum -y install httpd#查看版本确认是否安装成功httpd -v#开启服务service httpd start或者systemctl start httpd.service#设置开机自动开启服务systemctl enable httpd.service#安">
-<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/xss1.png">
-<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/control.png">
-<meta property="og:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/myjs.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/xss1.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/control.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/mail.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/config.png">
 <meta property="article:published_time" content="2020-05-21T02:53:42.000Z">
-<meta property="article:modified_time" content="2020-05-29T03:23:51.927Z">
+<meta property="article:modified_time" content="2021-12-30T01:24:55.495Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/xss1.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/xss1.png">
     
     
         
@@ -110,7 +111,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01安装web环境"><span class="toc-number">1.</span> <span class="toc-text">0x01安装web环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02简单设置蓝莲花平台"><span class="toc-number">2.</span> <span class="toc-text">0x02简单设置蓝莲花平台</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01安装web环境"><span class="toc-number">1.</span> <span class="toc-text">0x01安装web环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02简单设置蓝莲花平台"><span class="toc-number">2.</span> <span class="toc-text">0x02简单设置蓝莲花平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03设置邮件提醒"><span class="toc-number">3.</span> <span class="toc-text">0x03设置邮件提醒</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -161,14 +162,16 @@
 <p><strong>windows</strong></p>
 <p>下载<a href="https://www.xp.cn/" target="_blank" rel="noopener">phpstudy</a>一键搭站这就不说了。</p>
 <h2 id="0x02简单设置蓝莲花平台"><a href="#0x02简单设置蓝莲花平台" class="headerlink" title="0x02简单设置蓝莲花平台"></a>0x02简单设置蓝莲花平台</h2><p>下载地址<a href="https://pan.baidu.com/s/1WyvpLJE5tnPFvdr3Us5w7A" target="_blank" rel="noopener">https://pan.baidu.com/s/1WyvpLJE5tnPFvdr3Us5w7A</a> 提取码 wyde</p>
-<p>上传所有文件至空间根目录<br>在配置前，需要赋予xss数据存储路径、js模板存储路径、我的js存储路径写权限，以及平台根目录写权限（sudo chmod 777 -R ./）<br>将config-sample.php重命名为config.php<br>访问http://网站地址/admin.php<br>看到如下页面即安装成功<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/xss1.png" alt="explain"><br>平台默认密码为bluelotus</p>
+<p>上传所有文件至空间根目录<br>在配置前，需要赋予xss数据存储路径、js模板存储路径、我的js存储路径写权限，以及平台根目录写权限（sudo chmod 777 -R ./）<br>将config-sample.php重命名为config.php<br>访问http://网站地址/admin.php<br>看到如下页面即安装成功<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/xss1.png" alt="explain"><br>平台默认密码为bluelotus</p>
 <p><strong>修改密码</strong><br>config.php中密码为加密后的hash值存储，可以运行如下代码生成密码hash值，然后替换config.php中的pass字段即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -r &#39;$salt&#x3D;&quot;!KTMdg#^^I6Z!deIVR#SgpAI6qTN7oVl&quot;;$key&#x3D;&quot;你的密码&quot;;$key&#x3D;md5($salt.$key.$salt);$key&#x3D;md5($salt.$key.$salt);$key&#x3D;md5($salt.$key.$salt);echo $key;&#39;</span><br></pre></td></tr></table></figure>
 <p><strong>简单使用</strong></p>
-<p>1.接收面板，顾名思义，收网的地方。<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/control.png" alt="explain"></p>
-<p>2.我的js，存储自定义payload的地方。<br><img src="https://github.com/MzzdToT/MzzdToT.github.io/raw/master/images/xss/myjs.png" alt="explain"><br>在这里可以新增、修改payload<br>payload中的地址为平台目录地址，比如我这里平台不在根目录/ 而是在/xss/下<br>生成的payload支持很多编码，如base、url、hex等，结合实际情况，各位可以自己尝试。</p>
-<p>其他的一些功能和配置见README.md</p>
-<p>以上就是搭建全部过程，通俗易懂。</p>
+<p>1.接收面板，顾名思义，收网的地方。<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/control.png" alt="explain"></p>
+<p>2.我的js，存储自定义payload的地方。</p>
+<p>在这里可以新增、修改payload<br>payload中的地址为平台目录地址，比如我这里平台不在根目录/ 而是在/xss/下<br>生成的payload支持很多编码，如base、url、hex等，结合实际情况，各位可以自己尝试。</p>
+<h2 id="0x03设置邮件提醒"><a href="#0x03设置邮件提醒" class="headerlink" title="0x03设置邮件提醒"></a>0x03设置邮件提醒</h2><p>这里以163邮箱为例</p>
+<p>首先在发送端账号开启smtp服务，用来支持客户端发送邮件<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/mail.jpg" alt="explain"><br>然后会得到一个授权码</p>
+<p>编辑根目录config文件,填写smtp服务器、端口等信息<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/xss/config.png" alt="explain"><br>授权码填在密码处，补充其他发件人收件人信息即可</p>
 
   </div>
 </article>
@@ -194,7 +197,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01安装web环境"><span class="toc-number">1.</span> <span class="toc-text">0x01安装web环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02简单设置蓝莲花平台"><span class="toc-number">2.</span> <span class="toc-text">0x02简单设置蓝莲花平台</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01安装web环境"><span class="toc-number">1.</span> <span class="toc-text">0x01安装web环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02简单设置蓝莲花平台"><span class="toc-number">2.</span> <span class="toc-text">0x02简单设置蓝莲花平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03设置邮件提醒"><span class="toc-number">3.</span> <span class="toc-text">0x03设置邮件提醒</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
