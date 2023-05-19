@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="0x01 简介第一步发送探针，探测对方人员安全意识、网络环境等；第二步发送免杀exe细分下来大概就是：服务器搭建web存放探针文件 → 注册一个与目标相似的邮箱 → 生成短链接发送；CS生成c的paylaod → shellcode免杀 → 捆绑pdf、word等文件并添加图标 → 发送木马。 0x02 探针部分vps开启web服务并安装php环境php探针代码 12345678&lt;?php$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常规钓鱼手法">
+<meta property="og:url" content="https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/index.html">
+<meta property="og:site_name" content="m2">
+<meta property="og:description" content="0x01 简介第一步发送探针，探测对方人员安全意识、网络环境等；第二步发送免杀exe细分下来大概就是：服务器搭建web存放探针文件 → 注册一个与目标相似的邮箱 → 生成短链接发送；CS生成c的paylaod → shellcode免杀 → 捆绑pdf、word等文件并添加图标 → 发送木马。 0x02 探针部分vps开启web服务并安装php环境php探针代码 12345678&lt;?php$">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/vps1.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/vps2.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/mail5.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/cs3.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/bypass4.png">
+<meta property="article:published_time" content="2023-05-10T02:53:42.000Z">
+<meta property="article:modified_time" content="2023-05-19T08:28:23.280Z">
+<meta property="article:author" content="作者">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/vps1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>常规钓鱼手法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2022/04/26/cobaltstrike%E4%B8%8A%E7%BA%BF%E9%92%89%E9%92%89%E6%8F%90%E9%86%92/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&text=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&is_video=false&description=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=常规钓鱼手法&body=Check out this article: https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&name=常规钓鱼手法&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&t=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-简介"><span class="toc-number">1.</span> <span class="toc-text">0x01 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-探针部分"><span class="toc-number">2.</span> <span class="toc-text">0x02 探针部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-制作木马"><span class="toc-number">3.</span> <span class="toc-text">0x03 制作木马</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        常规钓鱼手法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">m2</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-05-10T02:53:42.000Z" itemprop="datePublished">2023-05-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="0x01-简介"><a href="#0x01-简介" class="headerlink" title="0x01 简介"></a>0x01 简介</h2><p>第一步发送探针，探测对方人员安全意识、网络环境等；第二步发送免杀exe<br>细分下来大概就是：<br>服务器搭建web存放探针文件 <strong>→</strong> 注册一个与目标相似的邮箱 <strong>→</strong> 生成短链接发送；<br>CS生成c的paylaod <strong>→</strong> shellcode免杀 <strong>→</strong> 捆绑pdf、word等文件并添加图标 <strong>→</strong> 发送木马。</p>
+<h2 id="0x02-探针部分"><a href="#0x02-探针部分" class="headerlink" title="0x02 探针部分"></a>0x02 探针部分</h2><p>vps开启web服务并安装php环境<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/vps1.png" alt="1"><br>php探针代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$user_agent &#x3D; $_SERVER[&#39;HTTP_USER_AGENT&#39;];</span><br><span class="line">$ip &#x3D; getenv (&#39;REMOTE_ADDR&#39;);</span><br><span class="line">$time &#x3D; date(&#39;Y-m-d g:i:s&#39;);</span><br><span class="line">$fp &#x3D; fopen(&quot;cHJvYmVpbmZv.txt&quot;,&quot;a&quot;);</span><br><span class="line">fwrite($fp,&quot;Date: &quot;.$time.&quot; IP: &quot;.$ip.&quot; UA:&quot;.$user_agent.&quot;\n&quot;);</span><br><span class="line">fclose($fp);</span><br><span class="line">header(&#39;location:https:&#x2F;&#x2F;www.pinduoduo.com&#x2F;&#39;);?&gt;</span><br></pre></td></tr></table></figure>
+<p>主要是记录访问者访问时间、IP、UA信息并保存</p>
+<p>我这里设置名字为index.php，然后在最后加了一个跳转到pdd首页，这个根据具体情况修改</p>
+<p>cHJvYmVpbmZv.txt是存放所有访问记录的文件，base加密防止被别人轻易找到<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/vps2.png" alt="2"><br>根据出口IP和UA信息可以大致判断出对方网络环境是办公网还是家庭宽带、手机还是PC及浏览器信息。</p>
+<p>用qq邮箱注册了一个英文账号<br>也可以防止被邮件服务器当成垃圾邮件<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/mail5.png" alt="5"></p>
+<h2 id="0x03-制作木马"><a href="#0x03-制作木马" class="headerlink" title="0x03 制作木马"></a>0x03 制作木马</h2><p>涉及到的工具：<a href="https://github.com/Pizz33/GobypassAV-shellcode" target="_blank" rel="noopener">https://github.com/Pizz33/GobypassAV-shellcode</a></p>
+<p><strong>生成payload</strong><br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/cs3.png" alt="3"></p>
+<p><strong>使用Base85+XOR+RC4+hex免杀</strong><br>替换encode.go里边的shellcode内容执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go run en.go</span><br></pre></td></tr></table></figure>
+<p>这一步有可能会被检测，如果生成不成功可以关闭杀软再次尝试<br><img src="https://cdn.jsdelivr.net/gh/MzzdToT/ibed/imgs/fishing/bypass4.png" alt="4"></p>
+<p>将以上加密后的结果替换到decode.go中encodedMessage参数执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build decode.go</span><br></pre></td></tr></table></figure>
+<p>这个工具目前免杀效果还是很不错的<br>生成的exe需要用管理员权限执行</p>
+<p><strong>捆绑</strong></p>
+<p>工具：<a href="https://github.com/Yihsiwei/GoFileBinder" target="_blank" rel="noopener">https://github.com/Yihsiwei/GoFileBinder</a></p>
+<p><strong>邮箱收集</strong><br>邮箱查询个人用得比较多的是<a href="https://phonebook.cz" target="_blank" rel="noopener">https://phonebook.cz</a><br>另外还有几个其他的<br><a href="https://hunter.io" target="_blank" rel="noopener">https://hunter.io</a><br><a href="http://www.skymem.info" target="_blank" rel="noopener">http://www.skymem.info</a><br><a href="https://www.email-format.com/i/search" target="_blank" rel="noopener">https://www.email-format.com/i/search</a></p>
+<p>发送的时候收件人可以写自己，然后抄送给目标员工，这样不容易被发现</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-简介"><span class="toc-number">1.</span> <span class="toc-text">0x01 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-探针部分"><span class="toc-number">2.</span> <span class="toc-text">0x02 探针部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-制作木马"><span class="toc-number">3.</span> <span class="toc-text">0x03 制作木马</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&text=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&is_video=false&description=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=常规钓鱼手法&body=Check out this article: https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&title=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&name=常规钓鱼手法&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://mzzdtot.github.io/2023/05/10/%E5%B8%B8%E8%A7%84%E9%92%93%E9%B1%BC%E6%89%8B%E6%B3%95/&t=常规钓鱼手法" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    作者
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="https://github.com/MzzdToT" target="_blank" rel="noopener">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
